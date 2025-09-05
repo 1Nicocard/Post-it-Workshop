@@ -3,11 +3,11 @@ const addButton = document.getElementById('add-note-button');
 const notesContainer = document.getElementById('notes-container');
 const toggleThemeButton = document.getElementById('toggle-theme-button');
 const body = document.body;
-const colors = ['note-yellow'];
+const colors = ['note-yellow', 'note-blue', 'note-pink',]; //Se agregan las 
 
 function createNoteElement(text, colorClass) {
     const noteDiv = document.createElement('div');
-    noteDiv.classList.add('note', colorClass); 
+    noteDiv.classList.add('note', colorClass);
     noteDiv.textContent = text;
 
     const deleteButton = document.createElement('span');
@@ -18,8 +18,9 @@ function createNoteElement(text, colorClass) {
     return noteDiv;
 }
 
+//Antes localstorage estaba vacio por lo cual le asignamos que guarde el item notes para poder mantener estos items en una sesion local
 function loadNotes() {
-    const storedNotes = [];
+    const storedNotes = localStorage.getItem('notes');
     console.log(storedNotes);
     if (storedNotes) {
         const notes = JSON.parse(storedNotes);
@@ -30,6 +31,26 @@ function loadNotes() {
     }
 }
 
+//_________________________________________________________________________
+
+//La nueva funcion de guardar notas tiene un array vacio y se le asigna que selecciones cualquier item 
+// de la clase note luego de esto se recorre su contenido y se agrega a al array principal con .push finalmente 
+// guardandolas y pasandolas de array a texto
+function saveNotes() {
+    const notes = [];
+    const noteElements = notesContainer.querySelectorAll('.note');
+    
+    noteElements.forEach(note => {
+        const text = note.textContent.slice(0, -1);
+        const color = [...note.classList].find(cls => cls.startsWith('note-'));
+        notes.push({ text, color });
+    });
+
+     localStorage.setItem('notes', JSON.stringify(notes));
+}
+
+//_________________________________________________________________________
+
 function setInitialTheme() {
     const isDarkMode = localStorage.getItem('isDarkMode') === 'true';
     if (isDarkMode) {
@@ -37,6 +58,8 @@ function setInitialTheme() {
         toggleThemeButton.textContent = 'Modo Claro';
     }
 }
+
+
 
 noteInput.addEventListener('input', () => {
     addButton.disabled = noteInput.value.trim() === '';
@@ -65,7 +88,7 @@ notesContainer.addEventListener('dblclick', (event) => {
             const newText = textarea.value.trim();
             target.textContent = newText;
             target.classList.remove('editing');
-            
+
             const deleteButton = document.createElement('span');
             deleteButton.classList.add('delete-btn');
             deleteButton.textContent = 'x';
@@ -89,8 +112,12 @@ addButton.addEventListener('click', () => {
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
         const newNote = createNoteElement(noteText, randomColor);
         notesContainer.appendChild(newNote);
-        const newNoteErr = createNoteElement(noteText, randomColor);
-        notesContainer.appendChild(newNoteErr);
+
+        //Estas lineas estan repetidas hacen que se creen dos notas, con un color random por lo tanto se elimina
+
+        //- const newNoteErr = createNoteElement(noteText, randomColor);
+        //- notesContainer.appendChild(newNoteErr);
+
         noteInput.value = '';
         addButton.disabled = true;
         saveNotes();

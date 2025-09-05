@@ -6,23 +6,23 @@ body {
     transition: background-color 0.5s, color 0.5s; 
 }
 .dark-mode { 
-    background-color: #ff0000; 
-    color: #00fff2; 
+    background-color: #303030; /* Se cambiaron algunas apariencias del modo oscuro, como el color de fondo y textos*/
+    color: #ffffff; 
 }
 #app-container { 
-    max-width: 60px; 
+    max-width: 750px; /* Se cambiao el tamaño del whidth para que los elementos tengan una mejor disposicion dentro del container*/
     margin: auto; 
     background: white; 
     padding: 20px; 
-    border-radius: 45px; 
+    border-radius: 30px; 
     box-shadow: 0 0 10px rgba(0,0,0,0.1); 
     transition: background-color 0.5s; 
 }
 .dark-mode #app-container { 
-    background-color: #c500f6; 
+    background-color: #4e4e4e; /* Se hizo cambio de color del contenedor en el modo oscuro*/
 }
 #new-note-input { 
-    width: 80%; 
+    width: 85%; 
     padding: 8px; 
     border: 1px solid #ccc; 
     border-radius: 4px; 
@@ -50,7 +50,7 @@ body {
     border-radius: 6px; 
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
     position: relative; 
-    width: 150px; 
+    width: 140px; 
     height: 150px; 
     transition: box-shadow 0.3s; 
     word-wrap: break-word;
